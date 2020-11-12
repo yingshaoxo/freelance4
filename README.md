@@ -16,3 +16,14 @@ It's a gate control system.
 ### techs
 * http://docs.micropython.org/en/latest/esp32/quickref.html#networking
 * https://github.com/peterhinch/micropython-mqtt
+
+## esp32
+### firmware update
+https://github.com/lvgl/lv_micropython
+
+```bash
+esptool.py --port /dev/ttyUSB0 erase_flash
+esptool.py --chip esp32 --port /dev/ttyUSB0 write_flash -fm dio -z 0x1000 firmware_idf3_generic_spiram.bin
+```
+
+https://yingshaoxo.blogspot.com/2020/11/how-to-update-pyborad-firmware.html
