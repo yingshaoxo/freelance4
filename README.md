@@ -105,12 +105,25 @@ print(response.content)
 https://github.com/pfalcon/pycopy-lib/tree/master/uurequests
 
 ### mqtt client
+Basically, you got two actions available.
+
+One is `publish`.
+
+Another is `subscribe`.
+
+If we want to send some message out to others, we need to use `publish`.
+
+If we want to just receive messages from others, we use `subscribe`.
+
 ```python
 from umqtt.simple import MQTTClient
 
-c = MQTTClient("umqtt_client", SERVICE_IP)
+#IP=$(/sbin/ip route | awk '/default/ { print $3 }')
+#mosquitto_sub -h $IP -i "client/b" -t "a_topic"
+
+c = MQTTClient("clients/a", SERVICE_IP)
 c.connect()
-c.publish(b"foo_topic", b"hello")
+c.publish(b"a_topic", b"hello")
 c.disconnect()
 ```
 
@@ -118,17 +131,17 @@ c.disconnect()
 import time
 from umqtt.simple import MQTTClient
 
-# Publish test messages e.g. with:
-# mosquitto_pub -t foo_topic -m hello
+#IP=$(/sbin/ip route | awk '/default/ { print $3 }')
+#mosquitto_pub -h $IP -i "client/a" -t "a_topic" -m "hello"
 
 # Received messages from subscriptions will be delivered to this callback
-def sub_cb(topic, msg):
+def callback(topic, msg):
     print((topic, msg))
 
-c = MQTTClient("umqtt_client", server)
-c.set_callback(sub_cb)
+c = MQTTClient("clients/b", server)
+c.set_callback(callback)
 c.connect()
-c.subscribe(b"foo_topic")
+c.subscribe(b"a_topic")
 while True:
     if True:
         # Blocking wait for message
@@ -142,6 +155,10 @@ while True:
 
 c.disconnect()
 ```
+
+* You can't receive a topic before you subscribe to it.
+* You won't receive anything if you don't call `client.check_msg()` or `client.wait_msg()`.
+* You may need a timer to execute the `check_msg()` function since you can't use threading in micropython.
 
 https://github.com/pfalcon/pycopy-lib/tree/master/umqtt.simple
 

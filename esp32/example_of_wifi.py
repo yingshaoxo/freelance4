@@ -1,10 +1,7 @@
 import network
-from time import sleep
-from umqtt.simple import MQTTClient
 
 WIFI_SSID = "gateman"
 WIFI_PASSWORD = "123456789"
-SERVICE_IP = ""
 
 def do_wifi_connect():
     sta_if = network.WLAN(network.STA_IF)
@@ -22,16 +19,5 @@ def do_wifi_connect():
         DNS server: {}""".format(*ifconfig))
     return ifconfig
 
-def mqtt_publish():
-    # Test reception e.g. with:
-    # mosquitto_sub -t foo_topic
-    c = MQTTClient("umqtt_client", SERVICE_IP)
-    c.connect()
-    c.publish(b"foo_topic", b"hello")
-    c.disconnect()
-
 if __name__ == '__main__':
     _,_,gateway,_ = do_wifi_connect()
-    SERVICE_IP = gateway
-    sleep(1)
-    mqtt_publish()
