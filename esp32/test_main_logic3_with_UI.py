@@ -4,9 +4,9 @@ from umqtt.simple import MQTTClient
 from machine import Timer
 import ujson
 
-WIFI_SSID = "gateman"
-WIFI_PASSWORD = "123456789"
-SERVICE_IP = ""
+WIFI_SSID = "Hello World"
+WIFI_PASSWORD = "yingshaoxo"
+SERVICE_IP = "192.168.49.182"
 
 GateName = "a"
 CLIENT_ID = "client/" + GateName
@@ -66,7 +66,7 @@ def do_wifi_connect():
         subnet mask: {}
         gateway: {} 
         DNS server: {}""".format(*ifconfig))
-    SERVICE_IP = ifconfig[2]
+    #SERVICE_IP = ifconfig[2]
 
 def mqtt_publish():
     global PublishDict

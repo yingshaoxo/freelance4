@@ -27,6 +27,9 @@ class MainActivity: FlutterActivity() {
             } else if (call.method == "openHotspotSettingPage") {
                 javaToolKit.open_hotspot_setting_page()
                 result.success("ok")
+            } else if (call.method == "openWiFiSettingPage") {
+                javaToolKit.open_wifi_setting_page()
+                result.success("ok")
             } else if (call.method == "startMQTTService") {
                 if (!this::mqtt_service_thread.isInitialized) {
                     mqtt_service_thread = Thread({
