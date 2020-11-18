@@ -26,5 +26,6 @@
             "command": "extension.execute",
             "priority": 4
         }
-    ]
+    ],
+    "python.pythonPath": "/bin/python3"
 }
