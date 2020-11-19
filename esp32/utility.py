@@ -1,4 +1,7 @@
 import network
+import machine
+import uos
+import usocket
 
 def encode(text: str):
     return text.encode("utf-8")
@@ -6,17 +9,21 @@ def encode(text: str):
 def decode(bytes_: bytes):
     return bytes_.decode("utf-8")
 
-def connect_wifi(ssid: str, password: str):
-    sta_if = network.WLAN(network.STA_IF)
-    if not sta_if.isconnected():
-        print('connecting to network...')
-        sta_if.active(True)
-        sta_if.connect(ssid, password)
-        while not sta_if.isconnected():
-            pass
-    ifconfig = sta_if.ifconfig()
-    print("""network config: 
-        IP address:  {}
-        subnet mask: {}
-        gateway: {} 
-        DNS server: {}""".format(*ifconfig))
+def show_widget(widget, hidden: bool):
+    widget.set_hidden(not hidden)
+
+def reboot():
+    machine.reset()
+    #machine.soft_reset()
+
+def remove_a_file(path: str):
+    uos.remove(path)
+
+def is_port_open(ip:str, port:str):
+    s = usocket.socket()
+    try:
+        s.connect(usocket.getaddrinfo(ip, port, 0, usocket.SOCK_STREAM)[0][-1])
+        s.close()
+        return True
+    except OSError:
+        return False

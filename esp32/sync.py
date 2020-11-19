@@ -24,6 +24,8 @@ PUT = PRE_COMMAND + "put "
 
 micropython_files = [name.strip("/") for name in t.run_command(LS).split("\n") if name.strip() != "" and name[-3:] == ".py"]
 print(micropython_files)
+if len(micropython_files) == 0:
+    exit()
 
 computer_files = disk.get_files(".", recursive=False, type_limiter=[".py"])
 computer_files = [name[2:] for name in computer_files if ".swp" not in name]
