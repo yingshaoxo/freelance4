@@ -37,6 +37,10 @@ def update_info():
         "password": "",
     }
 
+    if database.exists("gate_password"):
+        SubscribeDict["password"] = database.get("gate_password")
+
+
 def mqtt_publish():
     print("publish:", PublishDict)
     for key, value in PublishDict.items():
@@ -57,6 +61,8 @@ def mqtt_callback(topic, msg):
     msg = utility.decode(msg)
     if (topic == "password"):
         SubscribeDict["password"] = msg
+        database.set("gate_password", msg)
+        database.commit()
     if (topic == "doors_that_open"):
         SubscribeDict["doors_that_open"] = ujson.loads(msg)
 
@@ -97,6 +103,11 @@ def mqtt_connect():
     mqtt_subscribe()
     utility.sleep(1)
     mqtt_publish()
+
+    try:
+        MQTT_Timer.deinit()
+    except Exception as e:
+        print(e)
 
     MQTT_Timer.init(mode=Timer.PERIODIC, period=1000, callback=mqtt_timer_callback)
     print("start to listeing...")

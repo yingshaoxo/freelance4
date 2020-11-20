@@ -6,8 +6,8 @@ import usocket
 
 
 def is_wifi_ok():
-    print(database.dict)
     if (not database.exists(StoreKey.ssid)) or (not database.exists(StoreKey.password)):
+        print("wifi is no ok, return imediatly")
         return False
     else:
         ssid = database.get(StoreKey.ssid) 
@@ -22,7 +22,7 @@ def is_wifi_ok():
             while not sta_if.isconnected():
                 now = utime.ticks_ms()
                 diff = utime.ticks_diff(now, start_time)
-                if diff > 5000:
+                if diff > 10000:
                     return False
             ifconfig = sta_if.ifconfig()
             print("""network config: 
@@ -30,6 +30,8 @@ def is_wifi_ok():
                 subnet mask: {}
                 gateway: {} 
                 DNS server: {}""".format(*ifconfig))
+            return True
+        else:
             return True
 
 def is_port_open(ip:str, port:str):
