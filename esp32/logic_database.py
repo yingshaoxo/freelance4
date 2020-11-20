@@ -1,6 +1,14 @@
 import btree
 import utility
 
+class StoreKey:
+    reset = "reset"
+    device_name = "device_name"
+    ssid = "ssid"
+    password = "password"
+    service_ip = "service_ip"
+    door_password = "door_password"
+
 class Database:
     def __init__(self):
         self._db_file = "mydb.db"

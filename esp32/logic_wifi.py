@@ -1,5 +1,5 @@
 import utility
-from logic_database import database
+from logic_database import database, StoreKey
 import network
 import utime
 import usocket
@@ -7,11 +7,11 @@ import usocket
 
 def is_wifi_ok():
     print(database.dict)
-    if (not database.exists("ssid")) or (not database.exists("password")):
+    if (not database.exists(StoreKey.ssid)) or (not database.exists(StoreKey.password)):
         return False
     else:
-        ssid = database.get("ssid") 
-        password = database.get("password")
+        ssid = database.get(StoreKey.ssid) 
+        password = database.get(StoreKey.password)
 
         sta_if = network.WLAN(network.STA_IF)
         if not sta_if.isconnected():
@@ -22,7 +22,7 @@ def is_wifi_ok():
             while not sta_if.isconnected():
                 now = utime.ticks_ms()
                 diff = utime.ticks_diff(now, start_time)
-                if diff >  5000:
+                if diff > 5000:
                     return False
             ifconfig = sta_if.ifconfig()
             print("""network config: 

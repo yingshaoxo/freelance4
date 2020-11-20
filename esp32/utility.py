@@ -2,6 +2,7 @@ import network
 import machine
 import uos
 import usocket
+from time import sleep
 
 def encode(text: str):
     return text.encode("utf-8")
@@ -27,3 +28,15 @@ def is_port_open(ip:str, port:str):
         return True
     except OSError:
         return False
+
+def json_read(self, path):
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            text = f.read()
+    except OSError:
+        with open(path, "w", encoding="utf-8") as f:
+            f.write("")
+
+def json_write(self, path, content):
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(content)
