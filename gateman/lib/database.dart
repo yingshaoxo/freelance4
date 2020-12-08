@@ -39,7 +39,7 @@ class Database {
     Map<String, String> map = {};
     String raw = prefs.getString("english_to_chinese_door_name_dict") ??
         Utils.json_dumps(map);
-    return Utils.json_loads(raw);
+    return Map<String, String>.from(Utils.json_loads(raw));
   }
 
   void set english_to_chinese_door_name_dict(Map<String, String> object) {
